@@ -1,0 +1,12 @@
+---
+- hosts: TestServer
+  gather_facts: false
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Restart cron service
+      service:
+        name: crond.service
+        state: restarted
+      register: serv
+    - debug: var=serv

@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: Install package  lsof
+      installp:
+        name: "{{ package_name }}" 
+        repository_path: /tmp/lsof/lsof_4.891/
+        accept_license: yes
+        state: "{{ package_state }}" 
+      register: output
+    - debug: var=output

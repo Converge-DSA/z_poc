@@ -1,0 +1,28 @@
+---
+- hosts: <FQDN or IP>
+ # gather_facts: false
+  become: true
+  become_method: sudo
+  tasks:
+    - name: Download Satellite Certificate
+      shell: curl --insecure --output <repo path>
+    - pause:
+        seconds: 4
+
+    - name: Install Certificate
+      shell: rpm -i katello-ca-consumer-latest.noarch.rpm
+      ignore_errors: yes
+      register: result
+      changed_when: "'noarch is already installed' not in result.stderr"
+      failed_when: "result.stderr and 'noarch is already installed' not in result.stderr"
+    - pause:
+        seconds: 5
+
+
+    - name: Subscribe and attach required repositories
+      shell: subscription-manager register --org="<org name>" --activationkey={{ <activation key> }}
+      register: reg
+      changed_when: "'This system is already registered' not in reg.stderr"
+      failed_when: "reg.stderr and 'This system is already registered' not in reg.stderr"
+    - debug: var=reg
+

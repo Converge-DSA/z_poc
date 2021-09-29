@@ -1,0 +1,8 @@
+---
+- hosts: all
+  tasks:
+     - name: AIX rootvg backup with mksysb
+       shell: mksysb -ipvX /tmp/backup_rootvg/15_mksysb
+       register: reg
+
+     - debug: var=reg

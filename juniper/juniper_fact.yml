@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: false
+  connection: local
+  collections:
+    - junipernetworks.junos
+
+  tasks:
+    - name: collect default set of facts
+      junos_facts:
+      register: junip
+    - debug: var=junip
+

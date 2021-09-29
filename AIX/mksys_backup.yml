@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+    - name: Backup the rootvg with mksysb
+      mksysb:
+        name: "{{ backup_name }}"
+        storage_path: /tmp/backup_rootvg
+      register: output
+    - debug: var=output

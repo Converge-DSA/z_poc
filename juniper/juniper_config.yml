@@ -1,0 +1,16 @@
+---
+- hosts: all
+  gather_facts: false
+  connection: local
+  collections:
+    - junipernetworks.junos
+
+  tasks:
+    - name: Set VLAN access and trunking
+      junos_config:
+        lines:
+#          - set interfaces ge-0/0/5 description "LAN Connection to Router"
+#          - set interfaces ge-0/0/5 native-vlan-id 1
+          - set interfaces ge-0/0/5 unit 0 family ethernet-switching interface-mode trunk
+          - set interfaces ge-0/0/5 unit 0 family ethernet-switching vlan members all
+

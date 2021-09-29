@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+    - name: Run post implementation script
+      script:
+        cmd: /essmaix.sh --some-argument 1234
+      ignore_errors: yes
+      register: reg
+    - debug: var=reg

@@ -1,0 +1,7 @@
+---
+- hosts: all
+  tasks:
+    - name: Display tapes existing on the server
+      shell: lsdev -Cctape
+      register: list
+    - debug: var=list.stdout_lines

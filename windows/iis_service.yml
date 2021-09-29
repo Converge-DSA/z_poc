@@ -1,0 +1,8 @@
+---
+- hosts: ems_server
+  gather_facts: false
+  tasks:
+    - name: Restart an application pool
+      win_iis_webapppool:
+        name: ZenithBankSMSAPI
+        state: restarted

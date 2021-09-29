@@ -1,0 +1,55 @@
+---
+- hosts: all
+  tasks:
+    - name: Create custom facts directory
+      file:
+        path: /etc/ansible/facts.d/
+        state: directory
+        mode: '0777'
+
+    - name: Copy custom facts file to host
+      copy:
+        src: /custom.fact
+        dest: /etc/ansible/facts.d/
+        mode: '622'
+    - pause:
+        seconds: 3
+
+    - name: Get system facts
+      setup:
+      register: output
+
+    - name: List disk serial number
+      shell: "lscfg -vpl {{ tape_no }}|grep -i serial" 
+      register: serialn
+      failed_when: "serialn.stderr and 'not found' not in serialn.stderr"
+
+    - debug:
+        msg: "Please make use of {{ item }} for {{ tape_no }} {{ serialn.stdout }}" 
+      when: output.ansible_facts.ansible_local.custom.tape.{{ item }} == serialn.stdout
+      with_items:
+        - LT1
+        - LT2
+        - LT3
+        - LT4
+        - LT5
+        - LT6
+        - LT7
+        - LT8
+        - LT9
+        - LT10
+        - LT11
+        - LT12
+        - LT13
+        - LT14
+        - LT15
+        - LT16
+        - LT17
+        - LT18
+        - LT19
+        - LT20
+        - LT21
+        
+    - debug:
+        msg: "Tape {{ tape_no }} is not available on this server" 
+      when: "serialn.stderr and 'not found' in serialn.stderr" 

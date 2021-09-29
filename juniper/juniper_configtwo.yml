@@ -1,0 +1,28 @@
+---
+- hosts: all
+  gather_facts: false
+  connection: local
+  collections:
+    - junipernetworks.junos
+        
+  tasks:
+    - block:
+        - name: Juniper configurations
+          junos_config:
+            lines:
+            - set routing-options static route 0.0.0.0/0 qualified-next-hop 10.29.32.1 preference 150
+            - set protocols igmp-snooping vlan all
+            - set protocols rstp
+            - set firewall family inet filter local_acl term terminal_access from source-address 10.29.0.0/16
+            - set firewall family inet filter local_acl term terminal_access from source-address 10.28.0.0/16
+            - set firewall family inet filter local_acl term terminal_access from source-address 10.31.0.0/16
+            - set firewall family inet filter local_acl term terminal_access from source-address 10.20.0.0/16
+            - set firewall family inet filter local_acl term terminal_access from destination-port ssh
+            - set firewall family inet filter local_acl term terminal_access from destination-port telnet
+            - set firewall family inet filter local_acl term terminal_access then accept
+            - set firewall family inet filter local_acl term terminal_access_denied from destination-port ssh
+            - set firewall family inet filter local_acl term terminal_access_denied from destination-port telnet
+            - set firewall family inet filter local_acl term terminal_access_denied then discard
+            - set firewall family inet filter local_acl term default-term then accept
+
+     
